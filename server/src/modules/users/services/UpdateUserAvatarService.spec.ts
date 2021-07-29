@@ -62,4 +62,3 @@ describe('UpdateUserAvatar', () => {
     expect(user.avatar).toBe('avatar2.jpg');
   });
 })
-

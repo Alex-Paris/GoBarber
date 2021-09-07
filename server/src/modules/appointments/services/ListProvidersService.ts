@@ -16,7 +16,7 @@ class ListProvidersService {
     private usersRepository: IUsersRepository,
 
     @inject('CacheProvider')
-    private cacheProvider: ICacheProvider,
+    private cacheProvider: ICacheProvider
   ) {}
 
   public async execute({ user_id }: IRequestDTO): Promise<User[]> {

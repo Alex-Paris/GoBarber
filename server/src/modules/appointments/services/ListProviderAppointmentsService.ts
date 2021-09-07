@@ -34,8 +34,6 @@ class ListProviderAppointmentsService {
         day
       });
 
-      console.log('feito truta');
-
       await this.cacheProvider.save(cacheKey, appointments);
     }
 

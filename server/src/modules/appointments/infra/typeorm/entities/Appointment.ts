@@ -17,7 +17,7 @@ class Appointment {
   @Column()
   user_id: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User)//, { eager: true }) - Bring the entirely class, used to products in a order
   @JoinColumn({name: 'user_id'})
   user: User;
 

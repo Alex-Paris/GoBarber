@@ -1,10 +1,11 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { FiLogIn, FiMail } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 
+import api from '../../services/api';
 import { useToast } from '../../hooks/context/toast';
 import getValidationErrors from '../../utils/getValidationErrors';
 
@@ -20,12 +21,15 @@ interface ForgotPasswordFormData {
 }
 
 const ForgotPassword: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const formRef = useRef<FormHandles>(null);
 
   const { addToast } = useToast();
 
   const handleSubmit = useCallback(async (data: ForgotPasswordFormData) => {
     try {
+      setLoading(true);
+
       formRef.current?.setErrors({});
 
       const schema = Yup.object().shape({
@@ -36,9 +40,15 @@ const ForgotPassword: React.FC = () => {
         abortEarly: false
       });
 
-      //Recuperacap de senha
+      await api.post('/password/forgot', {
+        email: data.email
+      });
 
-      // history.push('/dashboard');
+      addToast({
+        type: 'success',
+        title: 'E-mail de recuperação enviado',
+        description: 'Enviamos um e-mail para confirmar a recuperação de seha, cheque sua caixa de entrada'
+      });
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errors = getValidationErrors(err);
@@ -53,6 +63,8 @@ const ForgotPassword: React.FC = () => {
         title: 'Erro na recuperação de senha',
         description: 'Ocorreu um erro ao tentar realizar a recuperação de senha, tente novamente.'
       });
+    } finally {
+      setLoading(false);
     }
   }, [addToast]);
 
@@ -67,7 +79,7 @@ const ForgotPassword: React.FC = () => {
 
             <Input name="email" icon={FiMail} placeholder="E-mail" />
 
-            <Button type="submit">Recuperar</Button>
+            <Button loading={loading} type="submit">Recuperar</Button>
           </Form>
 
           <Link to="/signin">

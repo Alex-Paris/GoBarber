@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FiClock, FiPower } from 'react-icons/fi';
-import { isToday, format, parseISO } from 'date-fns';
+import { isToday, format, parseISO, isAfter } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
@@ -122,6 +122,12 @@ const Dashboard: React.FC = () => {
     });
   }, [appointments]);
 
+  const nextAppointment = useMemo(() => {
+    return appointments.find(appointment => {
+      isAfter(parseISO(appointment.date), new Date());
+    });
+  }, [appointments]);
+
   return (
     <Container>
       <Header>
@@ -154,21 +160,26 @@ const Dashboard: React.FC = () => {
             <span>{selectedWeekDay}</span>
           </p>
 
-          <NextAppointment>
-            <strong>Atendimento a seguir</strong>
-            <div>
-              <img
-                src="https://yt3.ggpht.com/yti/APfAmoENyWa8B8szMSqFCAwKMUgu4pCgcFqUADbW_rmGCA=s88-c-k-c0x00ffffff-no-rj-mo"
-                alt="Alex"
-              />
+          {isToday(selectedDate) && nextAppointment && (
+            <NextAppointment>
+              <strong>Agendamento a seguir</strong>
+              <div>
+                <img
+                  src={!nextAppointment.user.avatar_url
+                    ? 'https://www.da.dk/globalassets/medarbejdere/sbg.jpg'
+                    : nextAppointment.user.avatar_url
+                  }
+                  alt={nextAppointment.user.name}
+                />
 
-              <strong>Alex</strong>
-              <span>
-                <FiClock />
-                08:00
-              </span>
-            </div>
-          </NextAppointment>
+                <strong>{nextAppointment.user.name}</strong>
+                <span>
+                  <FiClock />
+                  {nextAppointment.hourFormatted}
+                </span>
+              </div>
+            </NextAppointment>
+          )}
 
           <Section>
             <strong>Manhã</strong>

@@ -184,6 +184,10 @@ const Dashboard: React.FC = () => {
           <Section>
             <strong>Manhã</strong>
 
+            {morningAppointments.length === 0 && (
+              <p>Nenhum agendamento neste período</p>
+            )}
+
             {morningAppointments.map(appointment => (
               <Appointment key={appointment.id}>
                 <span>
@@ -193,7 +197,10 @@ const Dashboard: React.FC = () => {
 
                 <div>
                   <img
-                    src={!appointment.user.avatar_url ? 'https://www.da.dk/globalassets/medarbejdere/sbg.jpg' : appointment.user.avatar_url}
+                    src={!appointment.user.avatar_url
+                      ? 'https://www.da.dk/globalassets/medarbejdere/sbg.jpg'
+                      : appointment.user.avatar_url
+                    }
                     alt={appointment.user.name}
                   />
 
@@ -207,6 +214,10 @@ const Dashboard: React.FC = () => {
           <Section>
             <strong>Tarde</strong>
 
+            {afternoonAppointments.length === 0 && (
+              <p>Nenhum agendamento neste período</p>
+            )}
+
             {afternoonAppointments.map(appointment => (
               <Appointment key={appointment.id}>
                 <span>
@@ -216,7 +227,10 @@ const Dashboard: React.FC = () => {
 
                 <div>
                   <img
-                    src={!appointment.user.avatar_url ? 'https://www.da.dk/globalassets/medarbejdere/sbg.jpg' : appointment.user.avatar_url}
+                    src={!appointment.user.avatar_url
+                      ? 'https://www.da.dk/globalassets/medarbejdere/sbg.jpg'
+                      : appointment.user.avatar_url
+                    }
                     alt={appointment.user.name}
                   />
 

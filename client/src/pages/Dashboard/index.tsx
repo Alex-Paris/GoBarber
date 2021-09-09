@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FiClock, FiPower } from 'react-icons/fi';
 
-import { Container, Header, HeaderContent, Profile, Content, Schedule, NextAppointment, Calendar } from './styles';
+import {
+  Container,
+  Header,
+  HeaderContent,
+  Profile,
+  Content,
+  Schedule,
+  NextAppointment,
+  Section,
+  Appointment,
+  Calendar } from './styles';
 
 import { useAuth } from '../../hooks/context/auth';
 import logoImg from '../../assets/logo.svg';
 
 const Dashboard: React.FC = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   const { signOut, user } = useAuth();
 
   return (
@@ -56,6 +68,61 @@ const Dashboard: React.FC = () => {
               </span>
             </div>
           </NextAppointment>
+
+          <Section>
+            <strong>Manhã</strong>
+
+            <Appointment>
+              <span>
+                <FiClock />
+                08:00
+              </span>
+
+              <div>
+                <img
+                  src="https://yt3.ggpht.com/yti/APfAmoENyWa8B8szMSqFCAwKMUgu4pCgcFqUADbW_rmGCA=s88-c-k-c0x00ffffff-no-rj-mo"
+                  alt="Alex"
+                />
+
+                <strong>Alex</strong>
+              </div>
+            </Appointment>
+            <Appointment>
+              <span>
+                <FiClock />
+                08:00
+              </span>
+
+              <div>
+                <img
+                  src="https://yt3.ggpht.com/yti/APfAmoENyWa8B8szMSqFCAwKMUgu4pCgcFqUADbW_rmGCA=s88-c-k-c0x00ffffff-no-rj-mo"
+                  alt="Alex"
+                />
+
+                <strong>Alex</strong>
+              </div>
+            </Appointment>
+          </Section>
+
+          <Section>
+            <strong>Tarde</strong>
+
+            <Appointment>
+              <span>
+                <FiClock />
+                13:00
+              </span>
+
+              <div>
+                <img
+                  src="https://yt3.ggpht.com/yti/APfAmoENyWa8B8szMSqFCAwKMUgu4pCgcFqUADbW_rmGCA=s88-c-k-c0x00ffffff-no-rj-mo"
+                  alt="Alex"
+                />
+
+                <strong>Alex</strong>
+              </div>
+            </Appointment>
+          </Section>
         </Schedule>
         <Calendar />
       </Content>

@@ -30,9 +30,22 @@ export const UserName = styled.Text`
   font-family: 'RobotoSlab-Regular';
 `;
 
-export const ProfileButton = styled.TouchableOpacity`
-
+export const SignOutButton = styled(RectButton)`
+  background: #3e3b47;
+  border-radius: 10px;
+  padding: 16px;
+  flex-direction: row;
+  align-items: center;
 `;
+
+export const SignOutButtonText = styled.Text`
+  font-size: 18px;
+  font-family: 'RobotoSlab-Medium';
+  color: #f4ede8;
+`;
+
+
+export const ProfileButton = styled.TouchableOpacity``;
 
 export const UserAvatar = styled.Image`
   width: 56px;

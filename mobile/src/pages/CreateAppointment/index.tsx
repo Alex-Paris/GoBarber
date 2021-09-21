@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/core';
 import Icon from 'react-native-vector-icons/Feather';
-import { Platform } from 'react-native';
+import { Platform, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
 
@@ -28,7 +28,9 @@ import {
   SectionTitle,
   SectionContent,
   Hour,
-  HourText
+  HourText,
+  CreateAppointmentButton,
+  CreateAppointmentButtonText
 } from './styles';
 import api from '../../services/api';
 
@@ -51,7 +53,7 @@ const CreateAppointment: React.FC = () => {
 
   const { user } = useAuth();
   const route = useRoute();
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
 
   const routeParams = route.params as RouteParams;
 
@@ -105,6 +107,27 @@ const CreateAppointment: React.FC = () => {
   const handleSelectHour = useCallback((hour: number) => {
     setSelectedHour(hour);
   }, []);
+
+  const handleCreateAppointment = useCallback(async () => {
+    try {
+      const date = new Date(selectedDate);
+
+      date.setHours(selectedHour);
+      date.setMinutes(0);
+
+      await api.post('appointments', {
+        provider_id: selectedProvider,
+        date
+      });
+
+      navigate('AppointmentCreated', { date: date.getTime() });
+    } catch (err) {
+      Alert.alert(
+        'Erro ao criar agendamento',
+        'Ocorreu um erro ao tentar criar o agendamento, tente novamente'
+      );
+    }
+  }, [navigate, selectedDate, selectedHour, selectedProvider]);
 
   const morningAvailability = useMemo(() => {
     return availability
@@ -223,6 +246,9 @@ const CreateAppointment: React.FC = () => {
           </Section>
         </Schedule>
 
+        <CreateAppointmentButton onPress={handleCreateAppointment}>
+          <CreateAppointmentButtonText>Agendar</CreateAppointmentButtonText>
+        </CreateAppointmentButton>
       </Content>
     </Container>
   );

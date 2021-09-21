@@ -13,6 +13,15 @@ interface ProviderNameProps {
   selected: boolean;
 }
 
+interface HourProps {
+  available: boolean;
+  selected: boolean;
+}
+
+interface HourTextProps {
+  selected: boolean;
+}
+
 export const Container = styled.View`
   flex: 1;
 `;
@@ -53,7 +62,6 @@ export const ProvidersListContainer = styled.View`
 
 export const ProvidersList = styled(FlatList as new () => FlatList<Provider>)`
   padding: 32px 24px;
-
 `;
 
 export const ProviderContainer = styled(RectButton)<ProviderContainerProps>`
@@ -125,15 +133,17 @@ export const SectionContent = styled.ScrollView.attrs({
   horizontal: true
 })``;
 
-export const Hour = styled.View`
+export const Hour = styled(RectButton)<HourProps>`
   padding: 12px;
-  background: #3e3b47;
+  background: ${(props) => (props.selected ? '#ff9000' : '#3e3b47')};
   border-radius: 10px;
   margin-right: 8px;
+
+  opacity: ${(props) => (props.available ? 1 : 0.3)};
 `;
 
-export const HourText = styled.Text`
-  color: #f4ede8;
+export const HourText = styled.Text<HourTextProps>`
+  color: ${(props) => (props.selected ? '#232129' : '#f4ede8')};
   font-family: 'RobotoSlab-Regular';
   font-size: 16px;
 `;

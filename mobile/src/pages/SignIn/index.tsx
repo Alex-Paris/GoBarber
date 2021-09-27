@@ -54,7 +54,6 @@ const SignIn: React.FC = () => {
         password: data.password
       });
 
-      Alert.alert('Deu', 'BOM!!');
       // history.push('/dashboard');
     } catch (err) {
       if (err instanceof Yup.ValidationError) {

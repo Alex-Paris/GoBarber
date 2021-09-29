@@ -2,6 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import { View, ScrollView, KeyboardAvoidingView, Platform, TextInput, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'react-native-image-picker';
 import * as Yup from 'yup';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
@@ -104,6 +105,96 @@ const Profile: React.FC = () => {
     }
   }, [navigation, updateUser]);
 
+  const handleUpdateAvatar = useCallback(() => {
+    Alert.alert(
+      'Selecione um avatar',
+      '',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel'
+        },
+        {
+          text: 'Câmera',
+          onPress: () => {
+            ImagePicker.launchCamera(
+              {
+                mediaType: 'photo',
+                maxHeight: 480,
+                maxWidth: 480
+              },
+              (response) => {
+                if (response.didCancel) {
+                  return;
+                }
+
+                if (response.errorCode) {
+                  Alert.alert('Erro ao atualizar seu avatar', response.errorCode);
+                  return;
+                }
+
+                if (response.assets === undefined) {
+                  Alert.alert('Nenhuma imagem foi selecionada');
+                  return;
+                }
+
+                const data = new FormData();
+
+                data.append('avatar', {
+                  type: 'image/jpeg',
+                  name: `${user.id}.jpg`,
+                  uri: response.assets[0].uri
+                });
+
+                api.patch('users/avatar', data).then(response => {
+                  updateUser(response.data);
+                });
+              });
+          }
+        },
+        {
+          text: 'Galeria',
+          onPress: () => {
+            ImagePicker.launchImageLibrary(
+              {
+                mediaType: 'photo',
+                maxHeight: 480,
+                maxWidth: 480
+              },
+              (response) => {
+                if (response.didCancel) {
+                  return;
+                }
+
+                if (response.errorCode) {
+                  Alert.alert('Erro ao atualizar seu avatar', response.errorCode);
+                  return;
+                }
+
+                if (response.assets === undefined) {
+                  Alert.alert('Nenhuma imagem foi selecionada');
+                  return;
+                }
+
+                const data = new FormData();
+
+                data.append('avatar', {
+                  type: 'image/jpeg',
+                  name: `${user.id}.jpg`,
+                  uri: response.assets[0].uri
+                });
+
+                api.patch('users/avatar', data).then(response => {
+                  updateUser(response.data);
+                });
+              });
+          }
+        }
+      ]
+    );
+
+  }, [updateUser, user.id]);
+
   const handleGoBack = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
@@ -124,7 +215,7 @@ const Profile: React.FC = () => {
               <Icon name="chevron-left" size={24} color="#999591" />
             </BackButton>
 
-            <UserAvatarButton>
+            <UserAvatarButton onPress={handleUpdateAvatar}>
               <UserAvatar source={{ uri: user.avatar_url }} />
             </UserAvatarButton>
 

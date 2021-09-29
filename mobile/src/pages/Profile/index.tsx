@@ -43,7 +43,6 @@ const Profile: React.FC = () => {
   const handleUpdateUser = useCallback(async (data: ProfileFormData) => {
     try {
       formRef.current?.setErrors({});
-      return;
 
       const schema = Yup.object().shape({
         name: Yup.string().required('Nome obrigatório'),

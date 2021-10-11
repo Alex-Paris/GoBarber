@@ -35,6 +35,8 @@
     "@babel/core": "^7.12.9",
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^2.0.0",
+    "@testing-library/jest-native": "^4.0.2",
+    "@testing-library/react-native": "^7.2.0",
     "@types/jest": "^26.0.23",
     "@types/react-native": "^0.64.5",
     "@types/react-native-vector-icons": "^6.4.7",
@@ -58,6 +60,34 @@
   },
   "jest": {
     "preset": "react-native",
+    "globals": {
+      "ts-jest": {
+        "babelConfig": true
+      }
+    },
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/$1",
+      "^~/(.*)$": "<rootDir>/$1"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "transformIgnorePatterns": [
+      "./node_modules/(react-clone-referenced-element|@react-native-community|react-navigation|@react-navigation/.*|@unimodules/.*|native-base|react-native-code-push)"
+    ],
+    "testPathIgnorePatterns": ["./node_modules/", "\\.snap$"],
+    "cacheDirectory": ".jest/cache",
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["@testing-library/jest-native/extend-expect"],
+    "setupFiles": [
+      "./src/setupTests.ts",
+      "./node_modules/react-native-gesture-handler/jestSetup.js"
+    ],
+    "collectCoverageFrom": [
+      "src/pages/**/*.tsx",
+      "src/components/**/*.tsx",
+      "src/hooks/**/*.tsx",
+      "src/hooks/*.tsx",
+      "!src/hooks/index.tsx"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",

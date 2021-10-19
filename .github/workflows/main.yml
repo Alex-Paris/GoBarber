@@ -36,6 +36,7 @@ jobs:
           script: |
             cd ~/app/GoBarber/server
             yarn
+            sleep 50
             yarn build
             cd ./node_modules/.bin
             typeorm migration:run

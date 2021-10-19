@@ -34,7 +34,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd ~/app/node-deploy
+            cd ~/app/GoBarber/server
             yarn
             yarn build
             cd ./node_modules/.bin

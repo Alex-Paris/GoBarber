@@ -34,13 +34,9 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd ~/app/GoBarber/server
-            GOTO ThrowError
-            yarn
-            yarn build
-            cd ./node_modules/.bin
-            typeorm migration:run
-            pm2 restart gobarber-api
-            
-            :ThrowError
-            EXIT /b 1
+            cd ~/app/GoBarber/server || exit 1
+            yarn                     || exit 1
+            yarn build               || exit 1
+            cd ./node_modules/.bin   || exit 1
+            typeorm migration:run    || exit 1
+            pm2 restart gobarber-api || exit 1

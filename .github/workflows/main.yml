@@ -35,9 +35,12 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ~/app/GoBarber/server
+            GOTO ThrowError
             yarn
-            sleep 50
             yarn build
             cd ./node_modules/.bin
             typeorm migration:run
             pm2 restart gobarber-api
+            
+            :ThrowError
+            EXIT /b 1

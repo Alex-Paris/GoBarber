@@ -1,0 +1,103 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{ //Start-DB (GoBarber)
+			"label": "Start-DB (GoBarber)",
+			"type": "shell",
+			"command": "docker",
+			"args": ["start", "redis", "mongodb", "gostack-postgres"],
+			"problemMatcher": [],
+			"presentation": {
+				"close": true,
+				"reveal": "silent",
+				"panel": "dedicated",
+				"group": "utilities"
+			}
+		},			
+		{ //Start-Client (GoBarber)
+			"label": "Start-Client (GoBarber)",
+			"type": "shell",
+			"command": "yarn",
+			"args": ["start"],
+			"isBackground": true,
+			"options": {
+				"cwd": "${workspaceFolder:GoBarber}/client"
+			},
+			"problemMatcher":[
+				{
+					"pattern": [
+						{
+							"regexp": ".",
+							"file": 1,
+							"location": 2,
+							"message": 3
+						}
+					],
+					"background": {
+						"activeOnStart": true,
+						"beginsPattern": ".",
+						"endsPattern": "."
+					}
+				}
+			]
+		},
+		{ //Start-Mobile (GoBarber)
+			"label": "Start-Mobile (GoBarber)",
+			"type": "shell",
+			"command": "yarn",
+			"args": ["android"],
+			"isBackground": true,
+			"dependsOn": "Set-EmulatorAndroidTCP",
+			"dependsOrder": "sequence",
+			"options": {
+				"cwd": "${workspaceFolder:GoBarber}/mobile" 
+			},
+			"presentation": {
+				"revealProblems": "onProblem",
+				"close": true
+			}
+		},
+		{ //Start-Server (GoBarber)
+			"label": "Start-Server (GoBarber)",
+			"type": "shell",
+			"command": "yarn",
+			"args": ["dev:server"],
+			"isBackground": true,
+			"options": {
+				"cwd": "${workspaceFolder:GoBarber}/server"
+			},
+			"problemMatcher":[
+				{
+					"pattern": [
+						{
+							"regexp": ".",
+							"file": 1,
+							"location": 2,
+							"message": 3
+						}
+					],
+					"background": {
+						"activeOnStart": true,
+						"beginsPattern": ".",
+						"endsPattern": "."
+					}
+				}
+			]
+		},
+		{ //Client (GoBarber)
+			"label": "Client (GoBarber)",
+			"dependsOn":["Start-Client (GoBarber)","Server (GoBarber)"],
+			"dependsOrder": "parallel"
+		},
+		{ //Mobile (GoBarber)
+			"label": "Mobile (GoBarber)",
+			"dependsOn":["Start-EmulatorAndroid", "Server (GoBarber)", "Start-Mobile (GoBarber)"],
+			"dependsOrder": "parallel"
+		},
+		{ //Server (GoBarber)
+			"label": "Server (GoBarber)",
+			"dependsOn":["Start-DB (GoBarber)", "Start-Server (GoBarber)"],
+			"dependsOrder": "parallel"
+		},
+	]
+}
